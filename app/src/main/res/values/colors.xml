@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorLightSteelBlue">#DEC4B0</color>
+    <color name="colorSlateGray">#908070</color>
+    <color name="colorCrimson">#dc1421</color>
+    <color name="colorOrange">#ff8c00</color>
+    <color name="colorBlue">#6991e6</color>
+    <color name="colorLightGray">#f0e9e9</color>
+    <color name="colorGray">#c1bfbf</color>
+    <color name="colorWhite">#fff</color>
+    <color name="blue">#a2c2ce</color>>
+    <color name="colorFloatingActionButton">#6633FF</color>
+    <color name="colorSplashBackground">#6633FF</color>
+    <color name="colorLogin">#6633FF</color>
+    <color name="colorLoginButton">#6633FF</color>
+    <color name="colorCursor">#666666</color>
+    <color name="head_color">#6633FF</color>
+    <color name="information_title_color">#666666</color>
+    <color name="list_bg_color">#FFF4F4F4</color>
+    <color name="list_focus_color">#bdbdbd</color>
+    <color name="logoScreenBackground">#F7F7F7</color>
+    <color name="content_background">#f2f2f2</color>
+
+    <drawable name="checkbox">#666666</drawable>
+    <drawable name="camera_back_press">#1b1b1b</drawable>
+    <drawable name="camera_back_default">#2f2f2f</drawable>
+
+    <!-- Grey-->
+    <color name="grey_000">#FFFFFF</color>
+    <color name="grey_050">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+</resources>

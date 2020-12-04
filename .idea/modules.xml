@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Ucount.iml" filepath="$PROJECT_DIR$/Ucount.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/account.iml" filepath="$PROJECT_DIR$/.idea/modules/account.iml" group="account" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/account-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/account-app.iml" group="account/app" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
