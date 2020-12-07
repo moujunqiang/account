@@ -7,9 +7,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-/**
- * Created by yuukidach on 17-3-19.
- */
 
 public class MyGridLayoutManager extends GridLayoutManager {
     private static final String TAG = "MyGridLayoutManager";

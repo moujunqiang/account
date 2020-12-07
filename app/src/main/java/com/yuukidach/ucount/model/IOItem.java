@@ -7,7 +7,6 @@ import com.yuukidach.ucount.HomeFragment;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by yuukidach on 17-3-10.
  * 花费和收入的条目
  */
 

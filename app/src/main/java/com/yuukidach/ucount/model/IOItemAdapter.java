@@ -18,10 +18,6 @@ import org.litepal.crud.DataSupport;
 import java.text.DecimalFormat;
 import java.util.List;
 
-/**
- * Created by yuukidach on 17-3-10.
- */
-
 public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder> {
     private static final String TAG = "IOItemAdapter";
     private final int TYPE_COST = -1;

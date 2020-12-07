@@ -18,6 +18,9 @@ import java.util.Date;
 
 import at.markushi.ui.CircleButton;
 
+/**
+ * 添加备注信息
+ */
 public class AddDescription extends AppCompatActivity {
     private EditText inputTxt;
     private TextView countTxt;

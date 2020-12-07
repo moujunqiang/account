@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by dash on 18-3-12.
- */
 
 public class BookItem extends DataSupport {
     private int id;

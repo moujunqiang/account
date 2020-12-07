@@ -22,9 +22,7 @@ import com.yuukidach.ucount.model.IOItem;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yuukidach on 17-3-12.
- */
+
 
 public class CostFragment extends Fragment {
 

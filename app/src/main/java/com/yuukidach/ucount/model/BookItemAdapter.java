@@ -18,10 +18,6 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by dash on 18-3-12.
- */
-
 public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHolder> {
     private List<BookItem> mBookList;
     private OnItemClickListener onItemClickListener = null;

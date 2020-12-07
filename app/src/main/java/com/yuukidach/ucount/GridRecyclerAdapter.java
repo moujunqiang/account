@@ -12,10 +12,6 @@ import com.yuukidach.ucount.model.IOItem;
 
 import java.util.List;
 
-/**
- * Created by yuukidach on 17-3-19.
- */
-
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "GridRecyclerAdapter";
 

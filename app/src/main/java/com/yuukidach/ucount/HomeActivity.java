@@ -1,5 +1,7 @@
 package com.yuukidach.ucount;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -57,9 +59,26 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.quit:
-                getSharedPreferences("login", MODE_PRIVATE).edit().putBoolean("login", false);
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                finish();
+                final AlertDialog.Builder normalDialog =  new AlertDialog.Builder(HomeActivity.this);
+                normalDialog.setTitle("退出"  );
+                normalDialog.setMessage("是否要退出?"  );
+                normalDialog.setPositiveButton("确定",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getSharedPreferences("login", MODE_PRIVATE).edit().putBoolean("login", false);
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
+                normalDialog.setNegativeButton("关闭",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //...To-do
+                    }
+                });
+                // 显示
+                normalDialog.show();
+
                 break;
 
             case R.id.about:
