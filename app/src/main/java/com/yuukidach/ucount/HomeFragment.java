@@ -42,7 +42,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import at.markushi.ui.CircleButton;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -74,100 +73,7 @@ public class HomeFragment extends Fragment {
     private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
 
-    // 为ioitem recyclerView设置滑动动作
-    private ItemTouchHelper.Callback ioCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-            // 获得滑动位置
-            final int position = viewHolder.getAdapterPosition();
-
-            if (direction == ItemTouchHelper.RIGHT) {
-                // 弹窗确认
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("你确定要删除么？");
-
-                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ioAdapter.removeItem(position);
-                        // 刷新界面
-                        onResume();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LinearLayout sonView = (LinearLayout) viewHolder.itemView;
-                        TextView grandsonTextView = (TextView) sonView.findViewById(R.id.iotem_date);
-                        // 判断是否应该显示时间
-                        if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
-                            GlobalVariables.setmDate("");
-                        else GlobalVariables.setmDate(ioAdapter.getItemDate(position));
-                        ioAdapter.notifyItemChanged(position);
-                    }
-                }).show();  // 显示弹窗
-            }
-        }
-    };
-
-    private ItemTouchHelper ioTouchHelper = new ItemTouchHelper(ioCallback);
-
-
-    // 为bookitem recyclerview添加动作
-    private ItemTouchHelper.Callback bookCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            // 如果不想上下拖动，可以将 dragFlags = 0
-            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-
-            // 如果你想左右滑动，可以将 swipeFlags = 0
-            int swipeFlags = ItemTouchHelper.RIGHT;
-
-            //最终的动作标识（flags）必须要用makeMovementFlags()方法生成
-            int flags = makeMovementFlags(dragFlags, swipeFlags);
-            return flags;
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-
-        @Override
-        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-            // 获得滑动位置
-            final int position = viewHolder.getAdapterPosition();
-
-            if (direction == ItemTouchHelper.RIGHT) {
-                // 弹窗确认
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("你确定要删除么？");
-
-                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        bookAdapter.removeItem(position);
-                        // 刷新界面
-                        onResume();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        bookAdapter.notifyDataSetChanged();
-                    }
-                }).show();  // 显示弹窗
-            }
-        }
-    };
-
-    private ItemTouchHelper bookTouchHelper = new ItemTouchHelper(bookCallback);
     private View inflate;
-    //=============================================================================================================//
 
     @Nullable
     @Override
@@ -411,7 +317,52 @@ public class HomeFragment extends Fragment {
         ioItemRecyclerView.setLayoutManager(layoutManager);
         ioAdapter = new IOItemAdapter(ioItemList);
         ioItemRecyclerView.setAdapter(ioAdapter);
-        ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
+        ioAdapter.setOnLongClick(new IOItemAdapter.OnLongClick() {
+            @Override
+            public void onLoginClick(final int position) {
+                // 弹窗确认
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("你确定删除？");
+
+                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ioAdapter.removeItem(position);
+                        // 刷新界面
+                        onResume();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();  // 显示弹窗
+            }
+
+            @Override
+            public void onItemClick(final IOItem position) {
+                AlertDialog.Builder customizeDialog = new AlertDialog.Builder(getContext());
+
+                final View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.detail_dialog, null);
+                // 获取EditView中的输入内容
+                TextView tvTime = (TextView) dialogView.findViewById(R.id.tv_time);
+                TextView tvDesc = (TextView) dialogView.findViewById(R.id.tv_desc);
+                TextView tvMoney = (TextView) dialogView.findViewById(R.id.tv_money);
+                tvTime.setText(position.getTimeStamp());
+                tvDesc.setText("备注："+position.getDescription());
+                String type = position.getType() == -1 ? "支出：" : "收入：";
+                tvMoney.setText(type + position.getMoney());
+                customizeDialog.setTitle("详情");
+                customizeDialog.setView(dialogView);
+                customizeDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                customizeDialog.show();
+            }
+        });
     }
 
     public void setBookItemRecyclerView(Context context) {
@@ -434,7 +385,27 @@ public class HomeFragment extends Fragment {
         });
 
         bookItemRecyclerView.setAdapter(bookAdapter);
-        bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
+        bookAdapter.setOnItemLongClick(new BookItemAdapter.OnItemLongClick() {
+            @Override
+            public void onLongClick(final int position) {
+                // 弹窗确认
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("你确定要删除么？");
+
+                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        bookAdapter.removeItem(position);
+                        // 刷新界面
+                        onResume();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();  // 显示弹窗
+            }
+        });
 
         //GlobalVariables.setmBookId(bookItemRecyclerView.getId());
     }

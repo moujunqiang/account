@@ -8,9 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,13 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yuukidach.ucount.DB.UserBean;
 import com.yuukidach.ucount.DB.UserDao;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -35,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userName, passWord;
     private ImageView unameClear, pwdClear;
     private TextView userReg;
-    private CheckBox rememberPw, autoLogin;
+    private CheckBox rememberPw;
     private ImageView iv_icon;
     private Button login;
     private UserDao userdao;
@@ -62,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         userReg = (TextView) findViewById(R.id.link_signup);
         login = (Button) findViewById(R.id.btn_login);
         rememberPw = (CheckBox) findViewById(R.id.remember_pw);
-        autoLogin = (CheckBox) findViewById(R.id.auto_login);
         EditTextClearTools.addClearListener(userName, unameClear);
         EditTextClearTools.addClearListener(passWord, pwdClear);
 
@@ -74,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         boolean remember_Pw = sp.getBoolean("REMEMBER_PW", false);
         boolean auto_Login = sp.getBoolean("AUTO_LOGIN", false);
         rememberPw.setChecked(remember_Pw);
-        autoLogin.setChecked(auto_Login);
         String names = sp.getString("USER_NAME", "");
         String passwords = sp.getString("PASSWORD", "");
         if (remember_Pw) {
@@ -128,10 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 ed.putBoolean("REMEMBER_PW", true);
                 ed.commit();
             }
-            if (autoLogin.isChecked()) {
-                ed.putBoolean("AUTO_LOGIN", true);
-                ed.commit();
-            }
+
             startActivity(intent);
             finish();
         } else {
@@ -165,16 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (autoLogin.isChecked()) {
-                    rememberPw.setChecked(true);
-                }
-                ed.putBoolean("AUTO_LOGIN", autoLogin.isChecked());
-                ed.commit();
-            }
-        });
+
 
         rememberPw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

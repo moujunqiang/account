@@ -58,10 +58,11 @@
         <TextView
             android:id="@+id/monthly_income_title"
             android:text="@string/monthly_income_title"
-            android:textColor="@color/colorSlateGray"
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:textSize="18sp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_below="@id/header_img" />
 
@@ -78,12 +79,13 @@
         <TextView
             android:id="@+id/monthly_cost_title"
             android:text="@string/monthly_expenditure_title"
-            android:textColor="@color/colorSlateGray"
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_gravity="end"
+            android:textSize="18sp"
             android:layout_below="@id/header_img" />
 
         <TextView

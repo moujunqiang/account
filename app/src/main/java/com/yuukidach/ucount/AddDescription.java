@@ -1,5 +1,6 @@
 package com.yuukidach.ucount;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,10 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import at.markushi.ui.CircleButton;
@@ -35,13 +38,25 @@ public class AddDescription extends AppCompatActivity {
 
         // 显示日期
         dateTxt.setText(formatItem.format(new Date()));
+        final Calendar calendar = Calendar.getInstance();
+        dateTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AddDescription.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        dateTxt.setText(i + "年" + i1 + "月" + i2 + "日");
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         // 获取焦点
         inputTxt.setFocusable(true);
 
         inputTxt.setText(GlobalVariables.getmDescription());
         inputTxt.setSelection(inputTxt.getText().length());
-        countTxt.setText(String.valueOf(inputTxt.getText().length()) +"/30");
+        countTxt.setText(String.valueOf(inputTxt.getText().length()) + "/30");
 
         // 设置输入文本监听，实时显示字数
         inputTxt.addTextChangedListener(new TextWatcher() {
@@ -52,7 +67,7 @@ public class AddDescription extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                countTxt.setText(String.valueOf(s.length())+"/30");
+                countTxt.setText(String.valueOf(s.length()) + "/30");
             }
 
             @Override

@@ -25,10 +25,15 @@ import java.util.List;
 public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder> {
     private static final String TAG = "IOItemAdapter";
     private final int TYPE_COST = -1;
-    private final int TYPE_EARN =  1;
+    private final int TYPE_EARN = 1;
 
     private List<IOItem> mIOItemList;
     private String mDate;
+    private OnLongClick onLongClick;
+
+    public void setOnLongClick(OnLongClick onLongClick) {
+        this.onLongClick = onLongClick;
+    }
 
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -46,17 +51,17 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             super(view);
             earnLayout = (PercentRelativeLayout) view.findViewById(R.id.earn_left_layout);
             costLayout = (PercentRelativeLayout) view.findViewById(R.id.cost_right_layout);
-            dateBar    = (RelativeLayout) view.findViewById(R.id.date_bar);
+            dateBar = (RelativeLayout) view.findViewById(R.id.date_bar);
 
             itemImageEarn = (ImageView) view.findViewById(R.id.earn_item_img_main);
             itemImageCost = (ImageView) view.findViewById(R.id.cost_item_img_main);
-            itemNameEarn  = (TextView ) view.findViewById(R.id.earn_item_name_main);
-            itemNameCost  = (TextView ) view.findViewById(R.id.cost_item_name_main);
-            itemMoneyEarn = (TextView ) view.findViewById(R.id.earn_item_money_main);
-            itemMoneyCost = (TextView ) view.findViewById(R.id.cost_item_money_main);
-            itemDspEarn   = (TextView ) view.findViewById(R.id.earn_item_decription);
-            itemDspCost   = (TextView ) view.findViewById(R.id.cost_item_decription);
-            itemDate      = (TextView ) view.findViewById(R.id.iotem_date);
+            itemNameEarn = (TextView) view.findViewById(R.id.earn_item_name_main);
+            itemNameCost = (TextView) view.findViewById(R.id.cost_item_name_main);
+            itemMoneyEarn = (TextView) view.findViewById(R.id.earn_item_money_main);
+            itemMoneyCost = (TextView) view.findViewById(R.id.cost_item_money_main);
+            itemDspEarn = (TextView) view.findViewById(R.id.earn_item_decription);
+            itemDspCost = (TextView) view.findViewById(R.id.cost_item_decription);
+            itemDate = (TextView) view.findViewById(R.id.iotem_date);
         }
     }
 
@@ -67,13 +72,13 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.io_item, parent ,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.io_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        IOItem ioItem = mIOItemList.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final IOItem ioItem = mIOItemList.get(position);
         showItemDate(holder, ioItem.getTimeStamp());
         // 表示支出的布局
         if (ioItem.getType() == TYPE_COST) {       // -1代表支出
@@ -83,7 +88,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.itemNameCost.setText(ioItem.getName());
             holder.itemMoneyCost.setText(decimalFormat.format(ioItem.getMoney()));
             handleDescription(ioItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
-        //表示收入的布局
+            //表示收入的布局
         } else if (ioItem.getType() == TYPE_EARN) {
             holder.earnLayout.setVisibility(View.VISIBLE);
             holder.costLayout.setVisibility(View.GONE);
@@ -92,6 +97,19 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.itemMoneyEarn.setText(decimalFormat.format(ioItem.getMoney()));
             handleDescription(ioItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
         }
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                onLongClick.onLoginClick(position);
+                return false;
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLongClick.onItemClick(ioItem);
+            }
+        });
 
     }
 
@@ -107,7 +125,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.dateBar.setVisibility(View.VISIBLE);
             holder.itemDate.setText(Date);
             GlobalVariables.setmDate(Date);
-            Log.d(TAG, "showItemDate: "+Date);
+            Log.d(TAG, "showItemDate: " + Date);
         }
     }
 
@@ -121,7 +139,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         IOItem ioItem = mIOItemList.get(position);
         BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         int type = ioItem.getType();
-        bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney()*type);
+        bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney() * type);
         // 判断收支类型
         if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - ioItem.getMoney());
         else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - ioItem.getMoney());
@@ -133,14 +151,14 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
     }
 
     public boolean isThereADescription(IOItem ioItem) {
-        return (ioItem.getDescription()!=null && !ioItem.getDescription().equals(""));
+        return (ioItem.getDescription() != null && !ioItem.getDescription().equals(""));
     }
 
     public void handleDescription(IOItem ioItem, TextView Dsp, TextView Name, TextView Money) {
         if (isThereADescription(ioItem)) {
-            RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)Name.getLayoutParams();
+            RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams) Name.getLayoutParams();
             nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);
-            RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams)Money.getLayoutParams();
+            RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams) Money.getLayoutParams();
             moneyParams.removeRule(RelativeLayout.CENTER_VERTICAL);
             Dsp.setText(ioItem.getDescription());
             Name.setLayoutParams(nameParams);
@@ -148,5 +166,11 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         } else {
             Dsp.setVisibility(View.GONE);
         }
+    }
+
+    public interface OnLongClick {
+        void onLoginClick(int position);
+
+        void onItemClick(IOItem position);
     }
 }

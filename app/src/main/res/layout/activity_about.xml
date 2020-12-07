@@ -32,10 +32,13 @@
         android:background="#ececec" />
 
     <TextView
+        android:gravity="center"
         android:textSize="22sp"
         android:textColor="@color/blue"
         android:layout_centerInParent="true"
-        android:text="这是一个简单的记账本"
+        android:text="这是一个简单的记账本,作者：
+              2120782043 孙佳立"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
 </RelativeLayout>

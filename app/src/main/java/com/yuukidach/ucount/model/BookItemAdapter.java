@@ -25,6 +25,11 @@ import static android.content.ContentValues.TAG;
 public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHolder> {
     private List<BookItem> mBookList;
     private OnItemClickListener onItemClickListener = null;
+    private OnItemLongClick onItemLongClick;
+
+    public void setOnItemLongClick(OnItemLongClick onItemLongClick) {
+        this.onItemLongClick = onItemLongClick;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View bookView;
@@ -46,7 +51,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent ,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent, false);
 
         final ViewHolder holder = new ViewHolder(view);
 
@@ -63,7 +68,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         BookItem bookItem = mBookList.get(position);
         holder.book_name.setText(bookItem.getName());
 
@@ -75,6 +80,13 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             holder.bookView.setBackgroundColor(ContextCompat.getColor(holder.bookView.getContext(), R.color.colorWhite));
             holder.book_mark.setImageResource(R.drawable.home_detail_btn_n);
         }
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                onItemLongClick.onLongClick(position);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -89,10 +101,13 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
     }
 
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
+    public interface OnItemLongClick {
+        void onLongClick(int position);
+    }
     /*public void onItemMove(int fromPosition, int toPosition) {
         Collections.swap(mBookList, fromPosition, toPosition);
 

@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);

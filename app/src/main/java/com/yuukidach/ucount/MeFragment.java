@@ -50,7 +50,6 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), LoginActivity.class));
-                getActivity().finish();
                 SPUtils.put(getContext(), "login", false);
 
             }
